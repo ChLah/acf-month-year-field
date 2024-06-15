@@ -8,9 +8,9 @@ if ( ! defined( 'ABSPATH' ) ) {
 }
 
 /**
- * PREFIX_acf_field_FIELD_NAME class.
+ * month_year_acf_field_month_year_field class.
  */
-class PREFIX_acf_field_FIELD_NAME extends \acf_field {
+class month_year_acf_field_month_year_field extends \acf_field {
 	/**
 	 * Controls field type visibilty in REST requests.
 	 *
@@ -34,14 +34,14 @@ class PREFIX_acf_field_FIELD_NAME extends \acf_field {
 		 *
 		 * No spaces. Underscores allowed.
 		 */
-		$this->name = 'FIELD_NAME';
+		$this->name = 'month_year_field';
 
 		/**
 		 * Field type label.
 		 *
 		 * For public-facing UI. May contain spaces.
 		 */
-		$this->label = __( 'FIELD_LABEL', 'TEXTDOMAIN' );
+		$this->label = __( 'Month year field', 'acf-month-year-field' );
 
 		/**
 		 * The category the field appears within in the field type picker.
@@ -53,28 +53,26 @@ class PREFIX_acf_field_FIELD_NAME extends \acf_field {
 		 *
 		 * For field descriptions. May contain spaces.
 		 */
-		$this->description = __( 'FIELD_DESCRIPTION', 'TEXTDOMAIN' );
+		$this->description = __( 'Displays just month/year without picking a whole date', 'acf-month-year-field' );
 
 		/**
 		 * Field type Doc URL.
 		 *
 		 * For linking to a documentation page. Displayed in the field picker modal.
 		 */
-		$this->doc_url = 'FIELD_DOC_URL';
+		$this->doc_url = '';
 
 		/**
 		 * Field type Tutorial URL.
 		 *
 		 * For linking to a tutorial resource. Displayed in the field picker modal.
 		 */
-		$this->tutorial_url = 'FIELD_TUTORIAL_URL';
+		$this->tutorial_url = '';
 
 		/**
 		 * Defaults for your custom user-facing settings for this field type.
 		 */
-		$this->defaults = array(
-			'font_size'	=> 14,
-		);
+		$this->defaults = array();
 
 		/**
 		 * Strings used in JavaScript code.
@@ -82,16 +80,16 @@ class PREFIX_acf_field_FIELD_NAME extends \acf_field {
 		 * Allows JS strings to be translated in PHP and loaded in JS via:
 		 *
 		 * ```js
-		 * const errorMessage = acf._e("FIELD_NAME", "error");
+		 * const errorMessage = acf._e("month_year_field", "error");
 		 * ```
 		 */
 		$this->l10n = array(
-			'error'	=> __( 'Error! Please enter a higher value', 'TEXTDOMAIN' ),
+			'error'	=> __( 'Error! Please enter a correct value', 'acf-month-year-field' ),
 		);
 
 		$this->env = array(
-			'url'     => site_url( str_replace( ABSPATH, '', __DIR__ ) ), // URL to the acf-FIELD-NAME directory.
-			'version' => '1.0', // Replace this with your theme or plugin version constant.
+			'url'     => site_url( str_replace( ABSPATH, '', __DIR__ ) ), // URL to the acf-month-year-field directory.
+			'version' => '0.0.1', // Replace this with your theme or plugin version constant.
 		);
 
 		/**
@@ -113,24 +111,7 @@ class PREFIX_acf_field_FIELD_NAME extends \acf_field {
 	 * @param array $field
 	 * @return void
 	 */
-	public function render_field_settings( $field ) {
-		/*
-		 * Repeat for each setting you wish to display for this field type.
-		 */
-		acf_render_field_setting(
-			$field,
-			array(
-				'label'			=> __( 'Font Size','TEXTDOMAIN' ),
-				'instructions'	=> __( 'Customise the input font size','TEXTDOMAIN' ),
-				'type'			=> 'number',
-				'name'			=> 'font_size',
-				'append'		=> 'px',
-			)
-		);
-
-		// To render field settings on other tabs in ACF 6.0+:
-		// https://www.advancedcustomfields.com/resources/adding-custom-settings-fields/#moving-field-setting
-	}
+	public function render_field_settings( $field ) {}
 
 	/**
 	 * HTML content to show when a publisher edits the field on the edit screen.
@@ -139,19 +120,12 @@ class PREFIX_acf_field_FIELD_NAME extends \acf_field {
 	 * @return void
 	 */
 	public function render_field( $field ) {
-		// Debug output to show what field data is available.
-		echo '<pre>';
-		print_r( $field );
-		echo '</pre>';
-
 		// Display an input field that uses the 'font_size' setting.
 		?>
 		<input
-			type="text"
-			class="setting-font-size"
+			type="month"
 			name="<?php echo esc_attr($field['name']) ?>"
 			value="<?php echo esc_attr($field['value']) ?>"
-			style="font-size:<?php echo esc_attr( $field['font_size'] ) ?>px;"
 		/>
 		<?php
 	}
@@ -164,24 +138,6 @@ class PREFIX_acf_field_FIELD_NAME extends \acf_field {
 	 * @return void
 	 */
 	public function input_admin_enqueue_scripts() {
-		$url     = trailingslashit( $this->env['url'] );
-		$version = $this->env['version'];
-
-		wp_register_script(
-			'PREFIX-FIELD-NAME',
-			"{$url}assets/js/field.js",
-			array( 'acf-input' ),
-			$version
-		);
-
-		wp_register_style(
-			'PREFIX-FIELD-NAME',
-			"{$url}assets/css/field.css",
-			array( 'acf-input' ),
-			$version
-		);
-
-		wp_enqueue_script( 'PREFIX-FIELD-NAME' );
-		wp_enqueue_style( 'PREFIX-FIELD-NAME' );
+		// Default browser month picker is used, so no custom css or js is used
 	}
 }
